@@ -26,6 +26,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'https://grameen-connect-umber.vercel.app',
   'https://grameen-connect.vercel.app',
+  'https://grameen-connect-git-main-kkumar92798-4639s-projects.vercel.app',
 ];
 
 const corsOptions = {
