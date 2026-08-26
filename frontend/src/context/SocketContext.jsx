@@ -12,7 +12,7 @@ export const useSocket = () => {
   return context;
 };
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'https://grameen-connect.onrender.com';
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (import.meta.env.DEV ? '' : window.location.origin);
 
 export const SocketProvider = ({ children }) => {
   const { user } = useAuth();
