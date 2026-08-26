@@ -21,17 +21,19 @@ const app = express();
 const httpServer = createServer(app);
 
 // CORS - support multiple origins (comma-separated in CLIENT_URL)
-const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
-  .split(',')
-  .map((url) => url.trim());
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://grameen-connect-umber.vercel.app',
+];
 
 const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, curl, server-to-server)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      console.log('Blocked CORS origin:', origin);
+      callback(new Error(`Not allowed by CORS: ${origin}`));
     }
   },
   credentials: true,
