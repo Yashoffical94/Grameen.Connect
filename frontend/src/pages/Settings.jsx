@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { User, Bell, Shield, Lock, Eye, EyeOff, Smartphone, Globe, Mail, Briefcase, Badge } from 'lucide-react';
+import { User, Bell, Shield, Lock, Eye, EyeOff, Smartphone, Globe, Mail, Briefcase } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
+import Badge from '../components/ui/Badge';
 import { useToast } from '../hooks/useToast';
 
 const Settings = () => {

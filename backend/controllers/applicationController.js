@@ -8,12 +8,8 @@ import { AppError } from '../middleware/errorHandler.js';
 // @route   POST /api/applications
 export const applyToJob = async (req, res, next) => {
   try {
-    console.log('Application request body:', req.body);
-    console.log('Authenticated user:', req.user);
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      console.log('Validation errors:', errors.array());
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
@@ -64,7 +60,6 @@ export const applyToJob = async (req, res, next) => {
       data: application,
     });
   } catch (error) {
-    console.error('Create application error:', error);
     next(error);
   }
 };

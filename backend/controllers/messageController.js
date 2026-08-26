@@ -1,5 +1,6 @@
 import Message from '../models/Message.js';
 import User from '../models/User.js';
+import Notification from '../models/Notification.js';
 import { AppError } from '../middleware/errorHandler.js';
 
 // @desc    Get all conversations
@@ -120,14 +121,12 @@ export const sendMessage = async (req, res, next) => {
     }
 
     // Create notification
-    await import('../models/Notification.js').then(async ({ default: Notification }) => {
-      await Notification.create({
-        userId: receiverId,
-        type: 'message',
-        title: 'New Message',
-        body: text.substring(0, 100),
-        link: `/messages/${req.user.id}`,
-      });
+    await Notification.create({
+      userId: receiverId,
+      type: 'message',
+      title: 'New Message',
+      body: text.substring(0, 100),
+      link: `/messages/${req.user.id}`,
     });
 
     res.status(201).json({

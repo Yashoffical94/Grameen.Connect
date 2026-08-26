@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, Bell, MessageSquare, User, LogOut, Briefcase, Users } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -13,6 +13,21 @@ const TopNav = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
+
+  useEffect(() => {
+    if (user) {
+      fetchNotificationCount();
+    }
+  }, [user]);
+
+  const fetchNotificationCount = async () => {
+    try {
+      const response = await notificationsAPI.getNotifications();
+      setNotificationCount(response.data.unreadCount);
+    } catch (error) {
+      // Silently fail - notification count is non-critical
+    }
+  };
 
   const handleLogout = async () => {
     await logout();

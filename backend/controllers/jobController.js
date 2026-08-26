@@ -8,7 +8,6 @@ import { AppError } from '../middleware/errorHandler.js';
 // @route   GET /api/jobs
 export const getJobs = async (req, res, next) => {
   try {
-    console.log("USER:", req.user);
     const { type, state, trade, minRate, maxRate, sortBy, page = 1, limit = 10 } = req.query;
 
     const query = { status: 'active' };

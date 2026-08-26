@@ -15,7 +15,6 @@ const router = express.Router();
 
 // Public routes
 router.get('/', getJobs);
-router.get('/my', protect, authorize('contractor'), getMyJobs);
 router.get('/:id', getJob);
 
 // Protected routes

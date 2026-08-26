@@ -57,13 +57,23 @@ const JobDetail = () => {
     }
   };
 
-  const handleStatusChange = async (status) => {
+  const handleJobStatusChange = async (status) => {
     try {
       await jobsAPI.updateJobStatus(job._id, status);
       toast.success(`Job marked as ${status}`);
       fetchJob();
     } catch (error) {
       toast.error('Failed to update status');
+    }
+  };
+
+  const handleApplicationStatusChange = async (applicationId, status) => {
+    try {
+      await applicationsAPI.updateApplication(applicationId, status);
+      toast.success(`Application ${status}`);
+      fetchJob();
+    } catch (error) {
+      toast.error('Failed to update application');
     }
   };
 
@@ -229,14 +239,14 @@ const JobDetail = () => {
                               <Button
                                 size="sm"
                                 variant="primary"
-                                onClick={() => handleStatusChange('accepted')}
+                                onClick={() => handleApplicationStatusChange(app._id, 'accepted')}
                               >
                                 Accept
                               </Button>
                               <Button
                                 size="sm"
                                 variant="secondary"
-                                onClick={() => handleStatusChange('rejected')}
+                                onClick={() => handleApplicationStatusChange(app._id, 'rejected')}
                               >
                                 Reject
                               </Button>
@@ -304,7 +314,7 @@ const JobDetail = () => {
                   <Button
                     variant={job.status === 'active' ? 'secondary' : 'primary'}
                     className="w-full"
-                    onClick={() => handleStatusChange(job.status === 'active' ? 'closed' : 'active')}
+                    onClick={() => handleJobStatusChange(job.status === 'active' ? 'closed' : 'active')}
                   >
                     {job.status === 'active' ? 'Close Job' : 'Reopen Job'}
                   </Button>
