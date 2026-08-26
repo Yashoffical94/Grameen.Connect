@@ -24,7 +24,7 @@ const httpServer = createServer(app);
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://grameen-connect-umber.vercel.app',
+  'https://grameen-connect.vercel.app',
 ];
 
 const corsOptions = {
