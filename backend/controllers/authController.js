@@ -150,7 +150,10 @@ export const sendOTP = async (req, res, next) => {
     // For development, generate a mock OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    console.log(`OTP for ${phone}: ${otp}`); // Log for development
+    // Only log OTP in development - never in production logs
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`OTP for ${phone}: ${otp}`);
+    }
 
     // Store OTP in user document (temporary)
     await User.findOneAndUpdate(

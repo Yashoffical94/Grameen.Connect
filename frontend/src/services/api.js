@@ -1,78 +1,105 @@
-import { supabase } from '../lib/supabase';
+import axios from 'axios';
 
-const unwrap = (data, error) => {
-  if (error) throw error;
-  return { data: { data } };
-};
+// Backend API URL - set VITE_API_URL in .env (falls back to Render deployment)
+const API_URL = import.meta.env.VITE_API_URL || 'https://grameen-connect.onrender.com/api';
 
-const list = (table, query = {}) => {
-  let request = supabase.from(table).select(query.select || '*');
-  if (query.filters) Object.entries(query.filters).forEach(([key, value]) => { request = request.eq(key, value); });
-  if (query.order) request = request.order(query.order.column, { ascending: query.order.ascending ?? false });
-  if (query.limit) request = request.limit(query.limit);
-  return request.then(({ data, error }) => unwrap(data, error));
-};
+// Create axios instance
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
+// Request interceptor - add auth token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor - handle errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+// Auth APIs
 export const authAPI = {
-  register: async ({ email, password, fullName = '', role = 'labour', ...metadata }) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: import.meta.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/auth/callback`,
-        data: { full_name: fullName, role, ...metadata },
-      },
-    });
-    if (error) throw error;
-    return { data: { user: data.user, session: data.session } };
-  },
-  login: async ({ email, password }) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-    return { data: { user: data.user, session: data.session } };
-  },
-  logout: async () => unwrap(null, (await supabase.auth.signOut()).error),
-  getMe: async () => { const { data, error } = await supabase.auth.getUser(); return unwrap(data.user, error); },
+  register: (data) => api.post('/auth/register', data),
+  login: (data) => api.post('/auth/login', data),
+  logout: () => api.post('/auth/logout'),
+  sendOTP: (phone) => api.post('/auth/send-otp', { phone }),
+  verifyOTP: (phone, otp) => api.post('/auth/verify-otp', { phone, otp }),
+  forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
+  resetPassword: (token, newPassword) => api.post('/auth/reset-password', { token, newPassword }),
+  getMe: () => api.get('/auth/me'),
 };
 
+// User APIs
 export const usersAPI = {
-  getWorkers: (params = {}) => list('profiles', { filters: { role: 'labour', ...(params.location ? { location: params.location } : {}) }, order: { column: 'rating' } }),
-  getUserProfile: async (id) => { const { data, error } = await supabase.from('profiles').select('*').eq('id', id).single(); return unwrap(data, error); },
-  getMyProfile: async () => { const { data: { user }, error: authError } = await supabase.auth.getUser(); if (authError) throw authError; const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single(); return unwrap(data, error); },
-  updateProfile: async (profile) => { const { data: { user } } = await supabase.auth.getUser(); const { data, error } = await supabase.from('profiles').update({ ...profile, updated_at: new Date().toISOString() }).eq('id', user.id).select().single(); return unwrap(data, error); },
+  getWorkers: (params) => api.get('/users/workers', { params }),
+  getUserProfile: (id) => api.get(`/users/${id}`),
+  getMyProfile: () => api.get('/users/me'),
+  updateProfile: (data) => api.put('/users/me', data),
+  deleteAccount: () => api.delete('/users/me'),
+  uploadAvatar: (formData) => api.post('/users/me/avatar', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }),
 };
 
+// Job APIs
 export const jobsAPI = {
-  getJobs: (params = {}) => list('jobs', { filters: { status: params.status || 'open', ...(params.category ? { category: params.category } : {}), ...(params.location ? { location: params.location } : {}) }, order: { column: 'created_at' } }),
-  getJob: async (id) => { const { data, error } = await supabase.from('jobs').select('*, profiles:contractor_id(*)').eq('id', id).single(); return unwrap(data, error); },
-  getMyJobs: async () => { const { data: { user } } = await supabase.auth.getUser(); return list('jobs', { filters: { contractor_id: user.id }, order: { column: 'created_at' } }); },
-  createJob: async (job) => { const { data: { user } } = await supabase.auth.getUser(); const { data, error } = await supabase.from('jobs').insert({ ...job, contractor_id: user.id }).select().single(); return unwrap(data, error); },
-  updateJob: async (id, job) => { const { data, error } = await supabase.from('jobs').update({ ...job, updated_at: new Date().toISOString() }).eq('id', id).select().single(); return unwrap(data, error); },
-  updateJobStatus: (id, status) => jobsAPI.updateJob(id, { status }),
-  deleteJob: async (id) => unwrap(null, (await supabase.from('jobs').delete().eq('id', id)).error),
+  getJobs: (params) => api.get('/jobs', { params }),
+  getJob: (id) => api.get(`/jobs/${id}`),
+  getMyJobs: () => api.get('/jobs/my'),
+  createJob: (data) => api.post('/jobs', data),
+  updateJob: (id, data) => api.put(`/jobs/${id}`, data),
+  updateJobStatus: (id, status) => api.patch(`/jobs/${id}/status`, { status }),
+  deleteJob: (id) => api.delete(`/jobs/${id}`),
 };
 
+// Application APIs
 export const applicationsAPI = {
-  apply: async (application) => { const { data: { user } } = await supabase.auth.getUser(); const { data, error } = await supabase.from('applications').insert({ ...application, labour_id: user.id }).select().single(); return unwrap(data, error); },
-  getMyApplications: async () => { const { data: { user } } = await supabase.auth.getUser(); const { data, error } = await supabase.from('applications').select('*, jobs(*)').eq('labour_id', user.id).order('created_at', { ascending: false }); return unwrap(data, error); },
-  getIncomingApplications: async () => { const { data: { user } } = await supabase.auth.getUser(); const { data, error } = await supabase.from('applications').select('*, jobs!inner(*)').eq('jobs.contractor_id', user.id).order('created_at', { ascending: false }); return unwrap(data, error); },
-  updateApplication: async (id, status) => { const { data, error } = await supabase.from('applications').update({ status }).eq('id', id).select().single(); return unwrap(data, error); },
-  deleteApplication: async (id) => unwrap(null, (await supabase.from('applications').delete().eq('id', id)).error),
+  apply: (data) => api.post('/applications', data),
+  getMyApplications: (params) => api.get('/applications/my', { params }),
+  getIncomingApplications: (params) => api.get('/applications/incoming', { params }),
+  updateApplication: (id, status) => api.patch(`/applications/${id}`, { status }),
+  deleteApplication: (id) => api.delete(`/applications/${id}`),
 };
 
+// Message APIs
 export const messagesAPI = {
-  getMessages: async (userId) => { const { data: { user } } = await supabase.auth.getUser(); const { data, error } = await supabase.from('messages').select('*').or(`and(sender_id.eq.${user.id},receiver_id.eq.${userId}),and(sender_id.eq.${userId},receiver_id.eq.${user.id})`).order('created_at'); return unwrap(data, error); },
-  sendMessage: async (receiverId, body) => { const { data: { user } } = await supabase.auth.getUser(); const { data, error } = await supabase.from('messages').insert({ sender_id: user.id, receiver_id: receiverId, body }).select().single(); return unwrap(data, error); },
+  getConversations: () => api.get('/messages/conversations'),
+  getMessages: (userId) => api.get(`/messages/${userId}`),
+  sendMessage: (receiverId, text) => api.post('/messages', { receiverId, text }),
+  markMessagesRead: (userId) => api.patch(`/messages/${userId}/read`),
 };
 
+// Review APIs
 export const reviewsAPI = {
-  createReview: async (review) => { const { data: { user } } = await supabase.auth.getUser(); const { data, error } = await supabase.from('reviews').insert({ ...review, reviewer_id: user.id }).select().single(); return unwrap(data, error); },
-  getUserReviews: (userId) => list('reviews', { filters: { reviewee_id: userId }, order: { column: 'created_at' } }),
+  createReview: (data) => api.post('/reviews', data),
+  getUserReviews: (userId) => api.get(`/reviews/user/${userId}`),
+  deleteReview: (id) => api.delete(`/reviews/${id}`),
 };
 
+// Notification APIs
 export const notificationsAPI = {
-  getNotifications: async () => { const { data: { user } } = await supabase.auth.getUser(); return list('notifications', { filters: { user_id: user.id }, order: { column: 'created_at' } }); },
-  markNotificationRead: async (id) => unwrap(null, (await supabase.from('notifications').update({ read_at: new Date().toISOString() }).eq('id', id)).error),
+  getNotifications: () => api.get('/notifications'),
+  markAllRead: () => api.patch('/notifications/read'),
+  markNotificationRead: (id) => api.patch(`/notifications/${id}/read`),
 };
 
-export default supabase;
+export default api;

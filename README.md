@@ -39,7 +39,7 @@ A full-stack web application that connects skilled labourers (masons, electricia
 | Database | MongoDB + Mongoose |
 | Real-time | Socket.io |
 | Authentication | JWT + bcrypt |
-| File Upload | Multer + Cloudinary |
+| Security | Helmet, express-rate-limit, express-validator |
 | Routing | React Router v6 |
 
 ## Project Structure
@@ -228,16 +228,21 @@ Text Muted:    #94A3B8
 
 ## Deployment
 
+### Current Live Deployment
+
+- **Frontend:** https://grameen-connect-umber.vercel.app
+- **Backend:** https://grameen-connect.onrender.com
+
 ### Backend (Render/Railway)
 1. Create a new Web Service
-2. Connect your GitHub repository
-3. Set environment variables
-4. Add MongoDB connection string
+2. Connect your GitHub repository (root directory: `backend`)
+3. Set environment variables (see `backend/.env.example`)
+4. Add MongoDB connection string (MongoDB Atlas free tier works)
 5. Deploy
 
 ### Frontend (Vercel)
-1. Import project to Vercel
-2. Set `VITE_API_URL` to your backend URL
+1. Import project to Vercel (root directory: `frontend`)
+2. Set `VITE_API_URL` to your backend URL (e.g. `https://your-api.onrender.com/api`)
 3. Deploy
 
 ## Future Enhancements
@@ -259,7 +264,7 @@ MIT License - feel free to use this project for learning or commercial purposes.
 
 ## Support
 
-For issues or questions, please create an issue on GitHub or contact support@grameenconnect.in
+For issues or questions, please [open an issue](https://github.com/Yashoffical94/Grameen.Connect/issues) on GitHub.
 
 ---
 
