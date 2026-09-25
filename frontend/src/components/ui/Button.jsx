@@ -10,8 +10,8 @@ const Button = ({
   ...props
 }) => {
   const variants = {
-    primary: 'bg-primary hover:bg-primary-dark text-background',
-    secondary: 'bg-surface2 hover:bg-border text-text border border-border',
+    primary: 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-glow-sm hover:shadow-glow',
+    secondary: 'glass glass-hover text-text',
     danger: 'bg-danger hover:bg-red-700 text-white',
     ghost: 'hover:bg-surface2 text-text',
     outline: 'border border-primary text-primary hover:bg-primary/10',

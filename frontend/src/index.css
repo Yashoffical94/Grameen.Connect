@@ -10,8 +10,8 @@
 
 body {
   font-family: 'Noto Sans', sans-serif;
-  background-color: #0A0F14;
-  color: #F0F6FF;
+  background-color: #0B0A09;
+  color: #FDF7F0;
   line-height: 1.6;
 }
 
@@ -27,16 +27,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: #111820;
+  background: #15110D;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1E2D3D;
+  background: linear-gradient(180deg, #F97316, #C2410C);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #22C55E;
+  background: #FB923C;
+}
+
+::selection {
+  background: rgba(249, 115, 22, 0.3);
+  color: #FDF7F0;
 }
 
 /* Animations */
@@ -87,7 +92,10 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Button variants */
 .btn-primary {
-  @apply bg-primary hover:bg-primary-dark text-background font-semibold py-2.5 px-5 rounded-lg transition-all duration-200;
+  @apply bg-gradient-to-r from-primary to-primary-dark text-white font-semibold py-2.5 px-5 rounded-lg transition-all duration-200;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 40px -8px rgba(249, 115, 22, 0.45);
 }
 
 .btn-secondary {
@@ -106,6 +114,155 @@ h1, h2, h3, h4, h5, h6 {
 /* Card styles */
 .card {
   @apply bg-surface border border-border rounded-xl p-5 hover:border-primary/30 transition-all duration-200;
+}
+
+/* ===== Crystal / Glassmorphism UI ===== */
+.glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-hover {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.glass-hover:hover {
+  border-color: rgba(249, 115, 22, 0.45);
+  box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.7),
+    0 0 30px -10px rgba(249, 115, 22, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  transform: translateY(-3px);
+}
+
+/* Crystal facet highlight that catches the eye */
+.crystal {
+  position: relative;
+  overflow: hidden;
+}
+
+.crystal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.08) 45%,
+    rgba(255, 255, 255, 0.16) 50%,
+    rgba(255, 255, 255, 0.08) 55%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.8s ease;
+  pointer-events: none;
+}
+
+.crystal:hover::before {
+  transform: translateX(120%);
+}
+
+/* Gradient text for headings */
+.text-gradient {
+  background: linear-gradient(120deg, #FDBA74, #F97316, #FB923C);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmerMove 6s ease infinite;
+}
+
+/* ===== Animated 3D-style aurora background ===== */
+.aurora-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(249, 115, 22, 0.08), transparent 55%),
+    #0B0A09;
+  pointer-events: none;
+}
+
+.aurora-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.aurora-orb--1 {
+  width: 45vw;
+  height: 45vw;
+  top: -10%;
+  left: -8%;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.7), transparent 70%);
+  animation: float 16s ease-in-out infinite;
+}
+
+.aurora-orb--2 {
+  width: 40vw;
+  height: 40vw;
+  bottom: -12%;
+  right: -6%;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.5), transparent 70%);
+  animation: floatSlow 22s ease-in-out infinite;
+}
+
+.aurora-orb--3 {
+  width: 30vw;
+  height: 30vw;
+  top: 35%;
+  left: 45%;
+  background: radial-gradient(circle, rgba(194, 65, 12, 0.45), transparent 70%);
+  animation: float 19s ease-in-out infinite;
+}
+
+/* Faint grid to add depth / perspective */
+.aurora-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(249, 115, 22, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(249, 115, 22, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(circle at 50% 40%, black, transparent 75%);
+  -webkit-mask-image: radial-gradient(circle at 50% 40%, black, transparent 75%);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+  50% { transform: translateY(-40px) translateX(20px) scale(1.05); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+  50% { transform: translateY(30px) translateX(-25px) scale(1.08); }
+}
+
+@keyframes shimmerMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@media (max-width: 640px) {
+  .glass-hover:hover { transform: none; }
+  .aurora-orb { filter: blur(70px); opacity: 0.42; }
+  .aurora-grid { background-size: 42px 42px; }
+  .crystal::before { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-orb, .text-gradient { animation: none; }
 }
 
 /* Badge styles */
