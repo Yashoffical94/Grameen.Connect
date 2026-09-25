@@ -51,6 +51,13 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Animated 3D-style aurora background */}
+      <div className="aurora-bg" aria-hidden="true">
+        <div className="aurora-grid" />
+        <div className="aurora-orb aurora-orb--1" />
+        <div className="aurora-orb aurora-orb--2" />
+        <div className="aurora-orb aurora-orb--3" />
+      </div>
       <TopNav />
       <main className="flex-1 pt-16">
         <SocketProvider>

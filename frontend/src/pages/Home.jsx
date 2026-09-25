@@ -63,19 +63,22 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent" />
+      <section className="relative py-24 px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          <h1 className="text-4xl md:text-6xl font-bold font-heading mb-6">
+          <span className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 text-sm text-text-muted mb-6">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            Trusted across 32+ districts
+          </span>
+          <h1 className="text-4xl md:text-6xl font-bold font-heading mb-6 leading-tight">
             Connecting Rural Labour to
-            <span className="text-primary"> Contractors</span>
+            <span className="text-gradient"> Contractors</span>
           </h1>
           <p className="text-xl text-text-muted mb-8 max-w-2xl mx-auto">
             Fast, Free, Verified. Find skilled workers or jobs across Bihar, UP, Jharkhand, Rajasthan, and more.
           </p>
 
           {/* Search Bar */}
-          <form onSubmit={handleSearch} className="max-w-3xl mx-auto bg-surface border border-border rounded-2xl p-4 flex flex-col md:flex-row gap-3">
+          <form onSubmit={handleSearch} className="max-w-3xl mx-auto glass crystal rounded-2xl p-4 flex flex-col md:flex-row gap-3">
             <div className="flex-1">
               <Input
                 placeholder="Search by trade (e.g., Mason, Electrician)"
@@ -114,7 +117,7 @@ const Home = () => {
       </section>
 
       {/* Stats */}
-      <section className="py-12 px-4 bg-surface border-y border-border">
+      <section className="py-12 px-4 glass border-y border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, i) => (
@@ -168,7 +171,7 @@ const Home = () => {
       </section>
 
       {/* Trade Categories */}
-      <section className="py-20 px-4 bg-surface">
+      <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold font-heading text-center mb-4">
             Find Workers by Trade
@@ -181,7 +184,7 @@ const Home = () => {
               <Link
                 key={trade.name}
                 to={`/workers?trade=${trade.name}`}
-                className="group p-6 bg-surface2 border border-border rounded-xl hover:border-primary/30 transition-all"
+                className="group glass glass-hover crystal p-6 rounded-2xl"
               >
                 <div className={`text-4xl mb-3 bg-gradient-to-br ${trade.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto`}>
                   {trade.icon}
@@ -202,21 +205,21 @@ const Home = () => {
             Why Choose Grameen Connect?
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-6 bg-surface border border-border rounded-xl">
+            <div className="glass glass-hover crystal p-6 rounded-2xl">
               <Shield className="text-primary mb-4" size={32} />
               <h3 className="text-xl font-semibold mb-2">Aadhaar Verified</h3>
               <p className="text-text-muted">
                 All workers are phone and Aadhaar verified for your safety and trust.
               </p>
             </div>
-            <div className="p-6 bg-surface border border-border rounded-xl">
+            <div className="glass glass-hover crystal p-6 rounded-2xl">
               <MapPin className="text-primary mb-4" size={32} />
               <h3 className="text-xl font-semibold mb-2">Hyperlocal Search</h3>
               <p className="text-text-muted">
                 Find workers and jobs in your district and nearby areas.
               </p>
             </div>
-            <div className="p-6 bg-surface border border-border rounded-xl">
+            <div className="glass glass-hover crystal p-6 rounded-2xl">
               <Globe className="text-primary mb-4" size={32} />
               <h3 className="text-xl font-semibold mb-2">Local Language</h3>
               <p className="text-text-muted">
@@ -228,7 +231,7 @@ const Home = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 px-4 bg-surface">
+      <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold font-heading text-center mb-4">
             What Our Users Say
@@ -238,7 +241,7 @@ const Home = () => {
           </p>
           <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
-              <div key={i} className="p-6 bg-surface2 border border-border rounded-xl">
+              <div key={i} className="glass glass-hover p-6 rounded-2xl">
                 <div className="flex gap-1 mb-4">
                   {[...Array(t.rating)].map((_, i) => (
                     <Star key={i} className="fill-accent text-accent" size={16} />
@@ -265,7 +268,7 @@ const Home = () => {
 
       {/* CTA Banner */}
       <section className="py-16 px-4">
-        <div className="max-w-4xl mx-auto bg-gradient-to-r from-primary to-primary-dark rounded-2xl p-8 md:p-12 text-center">
+        <div className="max-w-4xl mx-auto bg-gradient-to-r from-primary to-primary-dark rounded-3xl p-8 md:p-12 text-center shadow-glow crystal">
           <h2 className="text-3xl font-bold font-heading mb-4 text-background">
             Ready to Get Started?
           </h2>

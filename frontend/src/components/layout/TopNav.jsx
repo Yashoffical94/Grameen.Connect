@@ -44,13 +44,13 @@ const TopNav = () => {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-40 glass border-b border-white/10 !rounded-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Briefcase className="text-background" size={20} />
+            <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center shadow-glow-sm">
+              <Briefcase className="text-white" size={20} />
             </div>
             <span className="font-heading font-bold text-xl text-text">
               Grameen Connect
