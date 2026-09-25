@@ -18,6 +18,7 @@ import Notifications from './pages/Notifications';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
+import AuthCallback from './pages/AuthCallback';
 
 // Protected route component
 const ProtectedRoute = ({ children, contractorOnly = false, labourOnly = false }) => {
@@ -66,6 +67,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
             <Route path="/signup" element={user ? <Navigate to="/dashboard" /> : <Signup />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/workers" element={<BrowseWorkers />} />
             <Route path="/jobs" element={<BrowseJobs />} />
             <Route path="/jobs/:id" element={<JobDetail />} />
