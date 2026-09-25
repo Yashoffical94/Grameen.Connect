@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Bell, MessageSquare, User, LogOut, Briefcase, Users } from 'lucide-react';
+import { Menu, X, Bell, MessageSquare, User, LogOut, Briefcase, Users, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { notificationsAPI } from '../../services/api';
 import Avatar from '../shared/Avatar';
@@ -49,8 +49,11 @@ const TopNav = () => {
         <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center shadow-glow-sm">
-              <Briefcase className="text-white" size={20} />
+            <div className="relative w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-primary via-orange-400 to-primary-dark p-[1px] shadow-glow-sm">
+              <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[11px] bg-surface/90">
+                <span className="absolute h-4 w-4 rotate-45 rounded-[5px] border border-primary/70 bg-primary/20" />
+                <Sparkles className="relative z-10 text-primary" size={16} strokeWidth={2.4} />
+              </div>
             </div>
             <span className="font-heading font-bold text-sm sm:text-xl text-text tracking-tight whitespace-nowrap">
               Grameen<span className="text-primary">.</span>Connect
