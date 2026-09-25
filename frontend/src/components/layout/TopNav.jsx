@@ -46,14 +46,14 @@ const TopNav = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 glass border-b border-white/10 !rounded-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-1.5 sm:gap-2 min-w-0">
             <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center shadow-glow-sm">
               <Briefcase className="text-white" size={20} />
             </div>
-            <span className="font-heading font-bold text-xl text-text">
-              Grameen Connect
+            <span className="font-heading font-bold text-sm sm:text-xl text-text tracking-tight whitespace-nowrap">
+              Grameen<span className="text-primary">.</span>Connect
             </span>
           </Link>
 
@@ -143,12 +143,12 @@ const TopNav = () => {
                 </div>
               </>
             ) : (
-              <div className="flex items-center gap-2">
-                <Link to="/login">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Link to="/login" className="hidden sm:block">
                   <Button variant="ghost" size="sm">Login</Button>
                 </Link>
                 <Link to="/signup">
-                  <Button size="sm">Sign Up</Button>
+                  <Button size="sm" className="px-2.5 sm:px-4 whitespace-nowrap text-xs sm:text-sm">Sign Up</Button>
                 </Link>
               </div>
             )}

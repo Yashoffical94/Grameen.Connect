@@ -63,22 +63,25 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-24 px-4 overflow-hidden">
+      <section className="relative pt-16 pb-14 sm:py-24 px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          <span className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 text-sm text-text-muted mb-6">
+          <span className="inline-flex items-center gap-2 glass rounded-full px-3 py-1.5 text-xs sm:text-sm text-text-muted mb-5 sm:mb-6">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             Trusted across 32+ districts
           </span>
-          <h1 className="text-4xl md:text-6xl font-bold font-heading mb-6 leading-tight">
+          <div className="mb-5 sm:mb-6">
+            <p className="text-primary text-xs font-semibold tracking-[0.2em] uppercase mb-3">Built for local work</p>
+          </div>
+          <h1 className="text-[2.35rem] sm:text-4xl md:text-6xl font-bold font-heading mb-5 sm:mb-6 leading-[1.08] tracking-tight">
             Connecting Rural Labour to
             <span className="text-gradient"> Contractors</span>
           </h1>
-          <p className="text-xl text-text-muted mb-8 max-w-2xl mx-auto">
+          <p className="text-base sm:text-xl text-text-muted mb-7 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
             Fast, Free, Verified. Find skilled workers or jobs across Bihar, UP, Jharkhand, Rajasthan, and more.
           </p>
 
           {/* Search Bar */}
-          <form onSubmit={handleSearch} className="max-w-3xl mx-auto glass crystal rounded-2xl p-4 flex flex-col md:flex-row gap-3">
+          <form onSubmit={handleSearch} className="max-w-3xl mx-auto glass crystal rounded-2xl sm:rounded-3xl p-2.5 sm:p-4 flex flex-col md:flex-row gap-2.5 sm:gap-3 text-left shadow-2xl shadow-orange-950/20">
             <div className="flex-1">
               <Input
                 placeholder="Search by trade (e.g., Mason, Electrician)"
@@ -101,14 +104,14 @@ const Home = () => {
             </Button>
           </form>
 
-          <div className="flex flex-wrap justify-center gap-4 mt-6">
+          <div className="grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:justify-center sm:gap-4 mt-4 sm:mt-6">
             <Link to="/signup?role=labour">
-              <Button size="lg" variant="primary">
+              <Button size="lg" variant="primary" className="w-full sm:w-auto">
                 I'm a Worker
               </Button>
             </Link>
             <Link to="/signup?role=contractor">
-              <Button size="lg" variant="secondary">
+              <Button size="lg" variant="secondary" className="w-full sm:w-auto">
                 I'm a Contractor
               </Button>
             </Link>
@@ -117,9 +120,9 @@ const Home = () => {
       </section>
 
       {/* Stats */}
-      <section className="py-12 px-4 glass border-y border-white/5">
+      <section className="py-8 sm:py-12 px-4 glass border-y border-white/5">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 sm:gap-8">
             {stats.map((stat, i) => (
               <div key={i} className="text-center">
                 <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
@@ -171,12 +174,18 @@ const Home = () => {
       </section>
 
       {/* Trade Categories */}
-      <section className="py-20 px-4">
+      <section className="py-14 sm:py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold font-heading text-center mb-4">
-            Find Workers by Trade
-          </h2>
-          <p className="text-text-muted text-center mb-12">
+          <div className="flex items-end justify-between gap-4 mb-8 sm:block sm:text-center sm:mb-12">
+            <div>
+              <p className="text-primary text-xs font-semibold tracking-[0.2em] uppercase mb-2">Browse skills</p>
+              <h2 className="text-2xl sm:text-3xl font-bold font-heading">
+                Find Workers by Trade
+              </h2>
+            </div>
+            <span className="text-xs text-text-muted sm:hidden">8 categories</span>
+          </div>
+          <p className="hidden sm:block text-text-muted text-center mb-12">
             Skilled labour across 8+ categories
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

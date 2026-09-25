@@ -254,6 +254,13 @@ h1, h2, h3, h4, h5, h6 {
   100% { background-position: 0% 50%; }
 }
 
+@media (max-width: 640px) {
+  .glass-hover:hover { transform: none; }
+  .aurora-orb { filter: blur(70px); opacity: 0.42; }
+  .aurora-grid { background-size: 42px 42px; }
+  .crystal::before { display: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .aurora-orb, .text-gradient { animation: none; }
 }
