@@ -2,7 +2,7 @@ import { supabase } from '../lib/supabase';
 
 const unwrap = (data, error) => {
   if (error) throw error;
-  return { data };
+  return { data: { data } };
 };
 
 const list = (table, query = {}) => {

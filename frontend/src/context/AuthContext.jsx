@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
       if (!mounted) return;
       if (authUser) {
         try {
-          const { data: profile } = await usersAPI.getMyProfile();
+          const { data: { data: profile } } = await usersAPI.getMyProfile();
           setUser({ ...authUser, ...profile });
         } catch {
           setUser(authUser);
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
-    const { data: profile } = await usersAPI.getMyProfile();
+    const { data: { data: profile } } = await usersAPI.getMyProfile();
     const mergedUser = { ...data.user, ...profile };
     setUser(mergedUser);
     return { user: mergedUser, session: data.session };
@@ -68,14 +68,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateUser = async (userData) => {
-    const { data } = await usersAPI.updateProfile(userData);
+    const { data: { data } } = await usersAPI.updateProfile(userData);
     const mergedUser = { ...user, ...data };
     setUser(mergedUser);
     return { user: mergedUser };
   };
 
   const refreshUser = async () => {
-    const { data } = await usersAPI.getMyProfile();
+    const { data: { data } } = await usersAPI.getMyProfile();
     setUser((current) => ({ ...current, ...data }));
     return data;
   };
