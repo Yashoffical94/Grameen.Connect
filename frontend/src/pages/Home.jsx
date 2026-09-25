@@ -81,28 +81,65 @@ const Home = () => {
           </p>
 
           {/* Search Bar */}
-          <form onSubmit={handleSearch} className="max-w-3xl mx-auto glass crystal rounded-2xl sm:rounded-3xl p-2.5 sm:p-4 flex flex-col md:flex-row gap-2.5 sm:gap-3 text-left shadow-2xl shadow-orange-950/20">
-            <div className="flex-1">
-              <Input
-                placeholder="Search by trade (e.g., Mason, Electrician)"
-                value={searchTrade}
-                onChange={(e) => setSearchTrade(e.target.value)}
-                className="border-0 bg-transparent"
-              />
+          <div className="max-w-4xl mx-auto text-left">
+            <form onSubmit={handleSearch} className="relative glass crystal rounded-[1.75rem] p-3 sm:p-4 shadow-2xl shadow-orange-950/20">
+              <div className="hidden sm:flex items-center justify-between px-2 pb-3">
+                <div>
+                  <p className="text-sm font-semibold text-text">Find the right person for the job</p>
+                  <p className="text-xs text-text-muted mt-0.5">Search verified workers near you</p>
+                </div>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-[11px] font-medium text-primary">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                  Live network
+                </span>
+              </div>
+              <div className="grid md:grid-cols-[1fr_1fr_auto] gap-2.5">
+                <label className="group flex min-h-14 items-center gap-3 rounded-2xl border border-white/10 bg-black/10 px-4 transition-colors focus-within:border-primary/60 focus-within:bg-primary/5">
+                  <Search size={19} className="shrink-0 text-primary" aria-hidden="true" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-text-muted">What do you need?</span>
+                    <input
+                      aria-label="Search by trade"
+                      placeholder="Mason, electrician..."
+                      value={searchTrade}
+                      onChange={(e) => setSearchTrade(e.target.value)}
+                      className="mt-0.5 w-full bg-transparent text-sm text-text outline-none placeholder:text-text-muted/70"
+                    />
+                  </span>
+                </label>
+                <label className="group flex min-h-14 items-center gap-3 rounded-2xl border border-white/10 bg-black/10 px-4 transition-colors focus-within:border-primary/60 focus-within:bg-primary/5">
+                  <MapPin size={19} className="shrink-0 text-primary" aria-hidden="true" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-text-muted">Where?</span>
+                    <input
+                      aria-label="Search by location"
+                      placeholder="City, district or state"
+                      value={searchLocation}
+                      onChange={(e) => setSearchLocation(e.target.value)}
+                      className="mt-0.5 w-full bg-transparent text-sm text-text outline-none placeholder:text-text-muted/70"
+                    />
+                  </span>
+                </label>
+                <Button type="submit" className="min-h-14 rounded-2xl px-6 md:w-auto w-full">
+                  <Search size={18} aria-hidden="true" />
+                  <span>Search workers</span>
+                </Button>
+              </div>
+            </form>
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-3 text-xs text-text-muted sm:justify-start sm:px-2">
+              <span className="mr-1">Popular:</span>
+              {['Mason', 'Electrician', 'Plumber', 'Carpenter'].map((trade) => (
+                <button
+                  key={trade}
+                  type="button"
+                  onClick={() => setSearchTrade(trade)}
+                  className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 transition-colors hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
+                >
+                  {trade}
+                </button>
+              ))}
             </div>
-            <div className="flex-1">
-              <Input
-                placeholder="Location (e.g., Bihar, Patna)"
-                value={searchLocation}
-                onChange={(e) => setSearchLocation(e.target.value)}
-                className="border-0 bg-transparent"
-              />
-            </div>
-            <Button type="submit" className="md:w-auto w-full">
-              <Search size={20} />
-              Search
-            </Button>
-          </form>
+          </div>
 
           <div className="grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:justify-center sm:gap-4 mt-4 sm:mt-6">
             <Link to="/signup?role=labour">
